@@ -23,7 +23,7 @@ class RayCasting:
             else:
                 texture_height = TEXTURE_SIZE * HEIGHT / proj_height
                 wall_column = self.textures[texture].subsurface(
-                    offset * (TEXTURE_SIZE - SCALE), (TEXTURE_SIZE - texture_height) // 2, 
+                    offset * (TEXTURE_SIZE - SCALE), HALF_TEXTURE_SIZE - texture_height // 2, 
                     SCALE, texture_height
                 )
                 wall_column = pg.transform.scale(wall_column, (SCALE, HEIGHT))
@@ -33,10 +33,10 @@ class RayCasting:
 
     def ray_cast(self):
         self.ray_casting_result = []
+        texture_vert, texture_hor = 1, 1
         ox, oy = self.game.player.pos
         x_map, y_map = self.game.player.map_pos
 
-        texture_vert, texture_hor = 1, 1
 
         ray_angle = self.game.player.angle - HALF_FOV + 0.0001
         for ray in range(NUM_RAYS):
@@ -53,7 +53,7 @@ class RayCasting:
             dx = delta_depth * cos_a
 
             for i in range(MAX_DEPTH):
-                tile_hor = (int(x_hor), int(y_hor))
+                tile_hor = int(x_hor), int(y_hor)
                 if tile_hor in self.game.map.world_map:
                     texture_hor = self.game.map.world_map[tile_hor]
                     break
